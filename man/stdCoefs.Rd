@@ -33,7 +33,7 @@ If there is a significant interaction between population and length_cm, then the
 coefficients are kept and standardized with regards to fish length.
 }
 \examples{
-data(otoliths)
+data(shape)
 shape = stdCoefs(shape,classes="pop","length_cm")
 }
 \author{
@@ -42,8 +42,8 @@ Lisa Anne Libungan
 \references{
 Lleonart, J., Salat, J. & Torres, G.J. (2000) Removing allometric effects of body size in morphological analysis. Journal of Theoretical Biology, 205, 85-93.
 
-Longmore, C., Fogarty, K., Neat, F., Brophy, D., Trueman, C., Milton, A. & Mariani, S. (2010) A comparison of otolith microchemistry and otolith shape analysis for the study of spatial variation in a deep-sea teleost, Coryphaenoides rupestris. Environmental Biology of Fishes, 89, 591-605.
+Longmore, C., Fogarty, K., Neat, F., Brophy, D., Trueman, C., Milton, A. & Mariani, S. (2010) A comparison of otolith microchemistry and otolith shape analysis for the study of spatial variation in a deep-sea teleost, \emph{Coryphaenoides rupestris}. Environmental Biology of Fishes, 89, 591-605.
 
-Reist et al 1985
+Reist, J.D. (1985) An Empirical-Evaluation of Several Univariate Methods That Adjust for Size Variation in Morphometric Data. Canadian Journal of Zoology-Revue Canadienne De Zoologie, 63, 1429-1439.
 }
 

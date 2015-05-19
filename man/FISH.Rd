@@ -5,12 +5,15 @@
 \alias{FISH}
 \title{An example data file}
 \format{An example data file}
+\source{
+\url{https://github.com/lisalibungan/shapeR}
+}
 \usage{
 data(FISH)
 }
 \description{
-\itemize{
 The file's columns are:
+\itemize{
   \item country
   \item station
   \item pop

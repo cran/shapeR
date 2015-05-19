@@ -3,18 +3,23 @@
 \docType{data}
 \name{shape}
 \alias{shape}
-\title{An example shapeR instance including 160 images.
-The shape coefficients have been generated.
-The wavelet coefficients have been standardized using pop and length_cm.}
+\title{An example shapeR instance including 160 images.}
 \format{A shapeR class including 160 images}
+\source{
+\url{https://github.com/lisalibungan/shapeR}
+}
 \usage{
-data(otoliths)
+data(shape)
 }
 \description{
-\itemize{
+The shape coefficients have been generated.
+The wavelet coefficients have been standardized using pop and length_cm.
+}
+\details{
 The class slot's are as follows:
+\itemize{
   \item project.path. A path as "ShapeAnalysis/"
-  \item info.file. A file as FISH.txt. The information is stored in the data frame master.list
+  \item info.file. A file as FISH.csv. The information is stored in the data frame master.list
   \item outline.list. A list with three elements (IC, NO, SC) which give a list of the otolith outlines
   \item filter. A logical vector showing which elements of the master list have valid otoliths
   \item fourier.coef. A matrix of the Normalized Elliptic Fourier coefficients
