@@ -1,5 +1,5 @@
 #####################################
-##  OTOLITH SHAPE ANALYSIS 
+##  OTOLITH SHAPE ANALYSIS
 ##      Morphological functions
 ##      by Lisa Anne Libungan
 #####################################
@@ -23,17 +23,17 @@
     stop("Coefficients have not been standardized. Need to run stdCoefs?")
 }
 
-.shapeR.rbind.fill.matrix = function (...) 
+.shapeR.rbind.fill.matrix = function (...)
 {
   matrices <- list(...)
-  if (length(matrices) == 0) 
+  if (length(matrices) == 0)
     return()
   if (is.list(matrices[[1]]) && !is.matrix(matrices[[1]])) {
     matrices <- matrices[[1]]
   }
   tmp <- unlist(lapply(matrices, is.factor))
   if (any(tmp)) {
-    stop("Input ", paste(which(tmp), collapse = ", "), " is a factor and ", 
+    stop("Input ", paste(which(tmp), collapse = ", "), " is a factor and ",
          "needs to be converted first to either numeric or character.")
   }
   matrices[] <- lapply(matrices, as.matrix)
@@ -57,7 +57,7 @@
 # Based on Claude, J. 2008. Morphometrics with R. Springer, New York.
 # Error in the function in the book, wrote a new function
 # See: https://sites.google.com/site/raduiovita/morphometrics-software
-# f5.10. this function has been slightly modified 
+# f5.10. this function has been slightly modified
 #
 ######################################################################
 
@@ -67,13 +67,13 @@
   A1<-ef$an[1]; B1<-ef$bn[1]
   C1<-ef$cn[1]; D1<-ef$dn[1]
   theta<-(0.5*atan(2*(A1*B1+C1*D1)/(A1^2+C1^2-B1^2-D1^2)))%%pi
- 
+
   phaseshift<-matrix(c(cos(theta),sin(theta),-sin(theta),cos(theta)),2,2)
   M2<-matrix(c(A1,C1,B1,D1),2,2)%*%phaseshift
   v<-apply(M2^2,2, sum)
-  if (v[1]<v[2]){theta<-theta+pi/2} 
+  if (v[1]<v[2]){theta<-theta+pi/2}
   theta<-(theta+pi/2)%%pi-pi/2
- 
+
   Aa<-A1*cos(theta)+B1*sin(theta)
   Cc<-C1*cos(theta)+D1*sin(theta)
   scale<-sqrt(Aa^2+Cc^2)
@@ -83,7 +83,7 @@
   A<-B<-C<-D<-numeric(n)
   if (start){theta<-0}
   for (i in 1:n){
-    mat<-size*rotation%*%matrix(c(ef$an[i],ef$cn[i],ef$bn[i],ef$dn[i]),2,2)%*%matrix(c(cos(i*theta),sin(i*theta),-sin(i*theta),cos(i*theta)),2,2) #this resizes the first harmonic so its major axis is equal to 1; this is the classical way to standardize (normalize) EF coefficients, but may not be appropriate 
+    mat<-size*rotation%*%matrix(c(ef$an[i],ef$cn[i],ef$bn[i],ef$dn[i]),2,2)%*%matrix(c(cos(i*theta),sin(i*theta),-sin(i*theta),cos(i*theta)),2,2) #this resizes the first harmonic so its major axis is equal to 1; this is the classical way to standardize (normalize) EF coefficients, but may not be appropriate
     #mat<-rotation%*%matrix(c(ef$an[i],ef$cn[i],ef$bn[i],ef$dn[i]),2,2)%*%matrix(c(cos(i*theta),sin(i*theta),-sin(i*theta),cos(i*theta)),2,2) #without the size correction, just the rotation
     A[i]<-mat[1,1]
     B[i]<-mat[1,2]
@@ -142,19 +142,19 @@
 .shapeR.inverse.wavelet = function(coefs,m.o,plotDetail=T,return.polar=F,num.points=512*2,n.levels=5)
 {
   wwd = wd(rep(0,num.points))
-  
+
   for(level in 0:(log2(num.points)-1))
     wwd = putD(wwd,level=level,v=rep(0,2^level))
-  
+
   wwd = putD(wwd,level=0,v=coefs[1])
   wwd = putD(wwd,level=1,v=coefs[2:3])
-  
+
   for(level in 2:n.levels)
     wwd = putD(wwd,level=level,v=coefs[(sum(2^(c(1:(level-1)))):sum(2^(c(1:level))))[-1]+1])
-  
+
   rad=wr(wwd)+m.o
   angle = seq(-pi,pi,by=2*pi/num.points)[-1]
-  
+
   if(return.polar==F)
     list(X=rad*cos(angle),Y=rad*sin(angle))
   else
@@ -163,20 +163,20 @@
 
 
 .shapeR.resizeImage = function(im, size.ratio) {
-  # function to resize an image 
+  # function to resize an image
   # im = input image, w.out = target width, h.out = target height
   # Bonus: this works with non-square image scaling.
-  
+
   # initial width/height
   w.in = nrow(im)
   h.in = ncol(im)
-  
+
   w.out = floor(w.in*size.ratio)
   h.out = floor(h.in*size.ratio)
   # Create empty matrix
   im.out = matrix(rep(0,w.out*h.out), nrow =w.out, ncol=h.out )
-  
-  
+
+
   # Do resizing -- select appropriate indices
   im.out <- im[ floor(size.ratio* 1:w.out), floor(size.ratio* 1:h.out)]
 
@@ -196,14 +196,14 @@
   }
   M@grey[which(M@grey<=threshold)]<-0
   M@grey[which(M@grey>threshold)]<-1
-  
+
   if(mouse.click== T || display.images==T)
     plot(M,main=main)
-  
+
   start=list(x=NA,y=NA)
   if(mouse.click==T)
   {
-    # uses coordinates to start, need to select one spot 
+    # uses coordinates to start, need to select one spot
     start<-locator(1)
   }
   else{
@@ -226,7 +226,7 @@
   while (abs(I[x[1],x[2]]-I[x[1],(x[2]-1)])<0.1)
   {x[2]<-x[2]-1;
   #if(x[2]<1)
-  #  simpleError("Problem in detecting outline when collecting coordinates.")  
+  #  simpleError("Problem in detecting outline when collecting coordinates.")
   }
   a<-1
   M<-matrix(c(0,-1,-1,-1,0,1,1,1,1,1,0,-1,-1,-1,0,1),2,8,byrow=T)
@@ -237,7 +237,7 @@
 
   while ((any(c(X[a],Y[a])!=c(x1,x2) ) | length(X)<3))
   {
-    
+
     if (abs(I[x[1]+M[1,S+1],x[2]+M[2,S+1]]-I[x[1],x[2]])<0.1)
     {
       a<-a+1;X[a]<-x[1];Y[a]<-x[2];x<-x+M[,S+1]
@@ -256,7 +256,7 @@
       SS[a]<-S+3; S<-(S+7)%%8
     }
     else S<-(S+1)%%8
-    
+
     if(a>(dim(I)[1]+dim(I)[2])*1e2)
     {
       X[a]=x1
@@ -268,7 +268,7 @@
 
 #############################################################
 #
-#  Function to get the maximum length, height, area etc. 
+#  Function to get the maximum length, height, area etc.
 #  Use gpc.poly to get perimeter
 #
 #############################################################
@@ -283,7 +283,7 @@
 .shapeR.otolith.image.parameters=function(x)
 {
   xbil=max(diff(range(x[,1])))
-  ybil=max(diff(range(x[,2]))) 
+  ybil=max(diff(range(x[,2])))
   area = .shapeR.area(x)
   perimeter=.shapeR.fourier(x,16)$perimeter
   return(list(width=xbil,height=ybil,area=area,perimeter=perimeter))
@@ -291,7 +291,7 @@
 
 .shapeR.area = function(m){
  n = dim(m)[1]
- 
+
  x1 = m[,1]
  y1 = m[,2]
 
@@ -347,7 +347,7 @@
     V2[i+1]<-which.max((cos(M2[,1]-2*i*pi/n)))
   }
   V2<-sort(V2)
- 
+
   ord = order(M2[V2,1])
   list("pixindices"=V2[ord],"radii"=M2[V2[ord],2],"coord"=M1[V2[ord],],"angle"=M2[V2[ord],1])
 }
@@ -381,8 +381,8 @@
     mean.x = rep(min(mean.x),nc)
   if(std.type=="max")
     mean.x = rep(max(mean.x),nc)
-  
-  
+
+
   lm.y=list()
   for(i in 1:nc) lm.y[[i]]=lm(log(y[in.class==class[i]])~log(x[in.class==class[i]]))
   #Default regression set as 0, i.e. no standardization.
@@ -392,11 +392,11 @@
     p.value.b = summary(lm.y[[i]])$coefficients["log(x[in.class == class[i]])","Pr(>|t|)"]
     #If p value from regression is less than 0.05, we keep the regression coefficient
     if(is.finite(p.value.b) &&  p.value.b<p.crit){
-      #print(paste(class[i],"p.value=",p.value.b,"b=",lm.y[[i]]$coefficients[2]))    
+      #print(paste(class[i],"p.value=",p.value.b,"b=",lm.y[[i]]$coefficients[2]))
       b[i] = lm.y[[i]]$coefficients[2]
     }
   }
-  
+
   yy=y
   for(i in 1:nc)
   {
@@ -404,23 +404,22 @@
     yy[ind]=y[ind]*(mean.x[i]/x[ind])^b[i]
   }
   return(yy)
-  
-  
-}
 
+
+}
 
 
 .shapeR.coef.standardize.f = function(coef,classes,std.by,std.type="mean",is.na.classes=F,p.crit=0.05,bonferroni=TRUE,...)
 {
-  
+
   coef.standard = matrix(NA,nrow=dim(coef)[1],ncol=dim(coef)[2])
 
   k=1
   if(bonferroni)
     k = dim(coef)[2]
-  
+
   r.y = c()
-  for(i in 1:ncol(coef)) 
+  for(i in 1:ncol(coef))
   {
     #ANCOVA
     if(is.na.classes){
@@ -437,10 +436,10 @@
         r.y = c(r.y,i)
       }
     }
-    
+
     coef.standard[,i]= .shapeR.standard.coef(coef[,i],classes,std.by,std.type,is.na.classes,p.crit)
   }
-  
+
   if(is.null(r.y))
   {
     message("No coefficients removed")
@@ -449,9 +448,9 @@
 
   message("Removed coefficients: ",appendLF=F)
   message(paste(r.y,collapse=","))
-  
+
   return(list(coef.standard=coef.standard[,-r.y],r.y=r.y))
-  
+
 }
 
 .shapeR.variation.among = function(in.classes,coef)
@@ -460,17 +459,17 @@
 
   mean.var=function(x) mean(tapply(x,classes,var))
   mean.var.among=function(x) var(tapply(x,classes,mean))
-  
+
   a = length(levels(classes))
   na = tapply(coef[,1],classes,length)
-  
+
   n0 = 1/(a-1)*(dim(coef)[1] - sum(na^2)/sum(na))
 
   var.within=apply(coef,2,mean.var)
   var.among=n0*apply(coef,2,mean.var.among)
-  
+
   add.var.component=(var.among-var.within)/n0
-  
+
   return(add.var.component/(add.var.component+var.within))
 }
 
